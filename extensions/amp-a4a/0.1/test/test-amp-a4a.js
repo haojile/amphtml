@@ -181,8 +181,8 @@ describe('amp-a4a', () => {
     const child = element.querySelector('iframe[src][name]');
     expect(child).to.be.ok;
     expect(child.src).to.match(/^https?:[^?#]+nameframe(\.max)?\.html/);
-    const name_data = child.getAttribute('name');
-    expect(JSON.parse.bind(null, name_data), name_data).not.to.throw(Error);
+    const nameData = child.getAttribute('name');
+    expect(JSON.parse.bind(null, nameData), nameData).not.to.throw(Error);
     expect(child).to.be.visible;
   }
 
@@ -405,6 +405,8 @@ describe('amp-a4a', () => {
   });
 
   describe('cross-domain vs A4A', () => {
+    let a4a;
+    let a4aElement;
     beforeEach(() => {
       xhrMock.withArgs(TEST_URL, {
         mode: 'cors',
