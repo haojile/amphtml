@@ -310,7 +310,7 @@ describe('amp-a4a', () => {
         devErrLogSpy = sandbox.spy(dev(), 'error');
         // If rendering type is unknown, should fall back to cached content
         // iframe and generate an error.
-        mockResponse.headers.set(RENDERING_TYPE_HEADER, 'random illegal value');
+        headers[RENDERING_TYPE_HEADER] = 'random illegal value';
         a4a.onLayoutMeasure();
       });
 
@@ -331,7 +331,7 @@ describe('amp-a4a', () => {
     describe('#renderViaNameFrame', () => {
       beforeEach(() => {
         // If rendering type is nameframe, we SHOULD attach a NameFrame.
-        mockResponse.headers.set(RENDERING_TYPE_HEADER, 'nameframe');
+        headers[RENDERING_TYPE_HEADER] = 'nameframe';
         a4a.onLayoutMeasure();
       });
 
@@ -389,7 +389,7 @@ describe('amp-a4a', () => {
     describe('#renderViaSafeFrame', () => {
       beforeEach(() => {
         // If rendering type is safeframe, we SHOULD attach a SafeFrame.
-        mockResponse.headers.set(RENDERING_TYPE_HEADER, 'safeframe');
+        headers[RENDERING_TYPE_HEADER] = 'safeframe';
         a4a.onLayoutMeasure();
       });
 
@@ -422,7 +422,7 @@ describe('amp-a4a', () => {
                 () => {
                   // If rendering type is anything but safeframe, we SHOULD NOT attach a
                   // SafeFrame.
-                  mockResponse.headers.set(RENDERING_TYPE_HEADER, headerVal);
+                  headers[RENDERING_TYPE_HEADER] = headerVal;
                   a4a.onLayoutMeasure();
                   return a4a.layoutCallback().then(() => {
                     // Force vsync system to run all queued tasks, so that
@@ -484,7 +484,7 @@ describe('amp-a4a', () => {
 
     ['nameframe', 'safeframe'].forEach(renderType => {
       it(`should not use ${renderType} if creative is A4A`, () => {
-        mockResponse.headers.set(RENDERING_TYPE_HEADER, renderType);
+        headers[RENDERING_TYPE_HEADER] = renderType;
         a4a.onLayoutMeasure();
         return a4a.layoutCallback().then(() => {
           // Force vsync system to run all queued tasks, so that DOM mutations
@@ -496,7 +496,7 @@ describe('amp-a4a', () => {
 
       it(`should not use ${renderType} even if onLayoutMeasure called ` +
           'multiple times', () => {
-        mockResponse.headers.set(RENDERING_TYPE_HEADER, renderType);
+        headers[RENDERING_TYPE_HEADER] = renderType;
         a4a.onLayoutMeasure();
         a4a.onLayoutMeasure();
         a4a.onLayoutMeasure();
