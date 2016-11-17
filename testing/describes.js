@@ -140,7 +140,7 @@ export const realWin = describeEnv(spec => [
 
 
 /**
- * A test with in a described environment.
+ * A test within a described environment.
  * @param {function(!Object):!Array<?Fixture>} factory
  */
 function describeEnv(factory) {
@@ -306,7 +306,11 @@ class FakeWinFixture {
 /** @implements {Fixture} */
 class RealWinFixture {
 
-  /** @param {!{fakeRegisterElement: boolean, ampCss: boolean}} spec */
+  /** @param {!{
+  *   fakeRegisterElement: boolean,
+  *   ampCss: boolean,
+  *   allowExternalResources: boolean
+  * }} spec */
   constructor(spec) {
     /** @const */
     this.spec = spec;
@@ -334,7 +338,9 @@ class RealWinFixture {
         // Flag as being a test window.
         win.AMP_TEST_IFRAME = true;
 
-        doNotLoadExternalResourcesInTest(win);
+        if (!spec.allowExternalResources) {
+          doNotLoadExternalResourcesInTest(win);
+        }
 
         // Install AMP CSS if requested.
         if (spec.ampCss) {
